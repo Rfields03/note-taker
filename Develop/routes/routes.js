@@ -3,10 +3,9 @@ const path = require('path');
 
 module.exports = app => {
 
-  fs.readFile("db/db.json", "utf8", (err, data) => {
+  fs.readFile("Develop/db/db.json", "utf8", (err, data) => {
 
     if (err) throw err;
-
     var notes = JSON.parse(data);
 
     // API ROUTES //
@@ -19,13 +18,13 @@ module.exports = app => {
     {
       let newNote = req.body;
       notes.push(newNote);
-      updateDb();
+      updatedb();
       return console.log("Added new note: "+newNote.title);
     });
 
     app.get("/api/notes/:id", function(req, res) {
       notes.splice(req.params.id, 1);
-      updateDb();
+      updatedb();
       console.log("Deleted note with id"+req.params.id);
     });
 
@@ -39,8 +38,8 @@ module.exports = app => {
       res.sendFile(path.join(_dirname, "../public/index.html"));
     });
 
-    function updateDb() {
-      fs.writeFile("db/db.json",JSON.stringify(notes, '\t'),err => {
+    function updatedb() {
+      fs.writeFile("Develop/db/db.json",JSON.stringify(notes, '\t'),err => {
         if(err) throw err;
         return true;
       });
